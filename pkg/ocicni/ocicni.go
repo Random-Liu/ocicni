@@ -173,9 +173,9 @@ func InitCNI(pluginDir string, cniDirs ...string) (CNIPlugin, error) {
 		return nil, err
 	}
 
-	// Fail loudly if plugin directory doesn't exist, because fsnotify watcher
-	// won't be able to watch it.
-	if _, err := os.Stat(pluginDir); err != nil {
+	// Ensure plugin directory exist, because following monitoring logic
+	// relies on that.
+	if err := os.MkdirAll(pluginDir); err != nil {
 		return nil, err
 	}
 
